@@ -1,3 +1,10 @@
+# Temporary files
+*~
+*.*~
+
+# CMake generated files
+build
+
 # Compiled Object files
 *.slo
 *.lo
