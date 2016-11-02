@@ -54,13 +54,13 @@ You should see no error messages after executing "cmake". Otherwise you need to 
 After the above steps, you will have a directory sturcture like:
 
 - Workspace
-  - 
-  
-    - pose
-    - apriltag
-    - eigen
-  - build
-  - README.md
+  - apriltag-pose
+    - src
+      - pose
+      - apriltag
+      - eigen
+    - build
+    - README.md
 
 ## 4. Use Eclipse with the Project
 
