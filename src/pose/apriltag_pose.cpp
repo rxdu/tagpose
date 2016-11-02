@@ -54,21 +54,23 @@ bool AprilTagPose::GetPoseFromImage(cv::OutputArray _dst)
 		cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 
 		// Make an image_u8_t header for the Mat data
+		// accessing cv::Mat (C++ data structure) in a C way
 		image_u8_t im = { .width = gray.cols,
 				.height = gray.rows,
 				.stride = gray.cols,
 				.buf = gray.data
 		};
 
+		// find all tags in the image frame
 		zarray_t *detections = apriltag_detector_detect(apriltag_detector_, &im);
 		std::cout << zarray_size(detections) << " tags detected" << std::endl;
 
-		// Draw detection outlines
+		// Draw detection outlines of each tag
 		for (int i = 0; i < zarray_size(detections); i++) {
 			apriltag_detection_t *det;
 			zarray_get(detections, i, &det);
 
-			// draw 4 border lines
+			// draw 4 border lines on the tag image
 			line(frame, Point(det->p[0][0], det->p[0][1]),
 					Point(det->p[1][0], det->p[1][1]),
 					Scalar(0, 0xff, 0), 2);
@@ -82,19 +84,21 @@ bool AprilTagPose::GetPoseFromImage(cv::OutputArray _dst)
 					Point(det->p[3][0], det->p[3][1]),
 					Scalar(0xff, 0, 0), 2);
 
-			// show tag id
+			// add tag id to the image
 			String text = std::to_string(det->id);
 			int fontface = FONT_HERSHEY_SCRIPT_SIMPLEX;
 			double fontscale = 1.0;
 			int baseline;
-			Size textsize = getTextSize(text, fontface, fontscale, 2,
-					&baseline);
-			putText(frame, text, Point(det->c[0]-textsize.width/2,
-					det->c[1]+textsize.height/2),
-					fontface, fontscale, Scalar(0xff, 0x99, 0), 2);
+			Size textsize = getTextSize(text, fontface, fontscale, 2, &baseline);
+			putText(frame, text,
+					Point(det->c[0]-textsize.width/2, det->c[1]+textsize.height/2),
+					fontface, 1.0, Scalar(0xff, 0x99, 0), 2);
 		}
+
+		// free memory used for detection
 		zarray_destroy(detections);
 
+		// copy image so that it can be displayed outside
 		_dst.create(frame.size(), frame.type());
 		frame.copyTo(_dst);
 

@@ -16,24 +16,25 @@ int main(int argc, char* argv[])
 {
 	AprilTagPose apriltag_pose;
 
+	// first open device
+	if(apriltag_pose.OpenDefaultVideoDevice())
+		std::cout << "device opened, hold any key to exit" << std::endl;
+	else
+		return -1;
+
+	// then start a loop for capture and detection
+	cv::Mat img_show;
 	namedWindow("Processed Image", WINDOW_NORMAL ); // WINDOW_AUTOSIZE
 
-	if(apriltag_pose.OpenDefaultVideoDevice())
+	while(true)
 	{
-		std::cout << "device opened" << std::endl;
+		apriltag_pose.GetPoseFromImage(img_show);
 
-		cv::Mat img_show;
-
-		while(true)
-		{
-			apriltag_pose.GetPoseFromImage(img_show);
-
-			imshow("Processed Image", img_show);
-			if (waitKey(30) >= 0)
-				break;
-		}
+		imshow("Processed Image", img_show);
+		if (waitKey(30) >= 0)
+			break;
 	}
 
-	waitKey(0);
+	return 0;
 }
 
