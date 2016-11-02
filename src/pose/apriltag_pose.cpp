@@ -98,7 +98,7 @@ bool AprilTagPose::GetPoseFromImage(cv::OutputArray _dst)
 
 			Eigen::Vector3d translation;
 			Eigen::Matrix3d rotation;
-			tag_det.getRelativeTranslationRotation(0.16, 595, 595, 330, 340,
+			tag_det.getRelativeTranslationRotation(0.064, 595, 595, 330, 340,
 					translation, rotation);
 
 			Eigen::Matrix3d F;
@@ -109,40 +109,19 @@ bool AprilTagPose::GetPoseFromImage(cv::OutputArray _dst)
 			double yaw, pitch, roll;
 			AprilTags::wRo_to_euler(fixed_rot, yaw, pitch, roll);
 
-			std::cout << "  distance=" << translation.norm()
-			        		 << "m, x=" << translation(0)
-							 << ", y=" << translation(1)
-							 << ", z=" << translation(2)
-							 << ", yaw=" << yaw/M_PI*180.0
-							 << ", pitch=" << pitch/M_PI*180.0
-							 << ", roll=" << roll/M_PI*180.0
-							 << std::endl;
-
-			/*------------------------------------------------------------*/
+			std::cout << " ------------------ " << std::endl;
+			std::cout << "tag id: " << tag_det.id << std::endl;
+			std::cout << "distance: " << translation.norm() << std::endl;
+			std::cout << "translation: ( " <<  translation(0) << " , "
+					<<  translation(1) << " , "
+					<<  translation(2) << " )" << std::endl;
+			std::cout << "rotation(rpy): ( " <<  roll/M_PI*180.0 << " , "
+								<<  pitch/M_PI*180.0 << " , "
+								<<  yaw/M_PI*180.0 << " )" << std::endl;
 
 			// draw 4 border lines on the tag image
-			line(frame, Point(det->p[0][0], det->p[0][1]),
-					Point(det->p[1][0], det->p[1][1]),
-					Scalar(0, 0xff, 0), 2);
-			line(frame, Point(det->p[0][0], det->p[0][1]),
-					Point(det->p[3][0], det->p[3][1]),
-					Scalar(0, 0, 0xff), 2);
-			line(frame, Point(det->p[1][0], det->p[1][1]),
-					Point(det->p[2][0], det->p[2][1]),
-					Scalar(0xff, 0, 0), 2);
-			line(frame, Point(det->p[2][0], det->p[2][1]),
-					Point(det->p[3][0], det->p[3][1]),
-					Scalar(0xff, 0, 0), 2);
-
-			// add tag id to the image
-			String text = std::to_string(det->id);
-			int fontface = FONT_HERSHEY_SCRIPT_SIMPLEX;
-			double fontscale = 1.0;
-			int baseline;
-			Size textsize = getTextSize(text, fontface, fontscale, 2, &baseline);
-			putText(frame, text,
-					Point(det->c[0]-textsize.width/2, det->c[1]+textsize.height/2),
-					fontface, 1.0, Scalar(0xff, 0x99, 0), 2);
+			tag_det.draw(frame);
+			/*------------------------------------------------------------*/
 		}
 
 		// free memory used for detection
