@@ -30,3 +30,4 @@ include_directories(${CMAKE_SOURCE_DIR}/apriltag/common)
 ## Add other sub source directories
 add_subdirectory(pose)
 add_subdirectory(apriltag)
+add_subdirectory(apriltag_utils)

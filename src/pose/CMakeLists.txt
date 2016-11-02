@@ -8,7 +8,7 @@ set(APRILTAG_POSE_LIB_SRC
   apriltag_pose.cpp
 )
 add_library(apriltag_pose STATIC ${APRILTAG_POSE_LIB_SRC})
-target_link_libraries(apriltag_pose apriltags ${OpenCV_LIBS})
+target_link_libraries(apriltag_pose apriltags apriltag_utils ${OpenCV_LIBS})
 
 add_executable(test_apriltag tests/test_pose.cpp)
 target_link_libraries(test_apriltag apriltags apriltag_pose -pthread)
