@@ -10,6 +10,9 @@
 
 #include "opencv2/opencv.hpp"
 
+#include "apriltag.h"
+#include "tag36h11.h"
+
 namespace apriltag_pose {
 
 class AprilTagPose
@@ -19,9 +22,19 @@ public:
 	~AprilTagPose();
 
 private:
+	// opencv devices
+	cv::VideoCapture video_cap_;
+
+	// apriltag variables
+	apriltag_detector_t* apriltag_detector_;
+	apriltag_family_t* apriltag_family_;
 
 public:
+	// video capture device operations
+	bool OpenDefaultVideoDevice();
 
+	// pose estimation from apriltags
+	bool GetPoseFromImage(cv::OutputArray _dst);
 };
 
 }

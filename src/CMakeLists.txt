@@ -22,6 +22,8 @@ else()
 endif()
 
 ## Config include directories
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/eigen/)
 include_directories(${CMAKE_SOURCE_DIR}/apriltag/)
 include_directories(${CMAKE_SOURCE_DIR}/apriltag/common)
 
