@@ -66,12 +66,12 @@ After the above steps, you will have a directory sturcture like:
 
 To generate project configurations for Eclipse, you need to pass in additional arguments to the "cmake" command.
 
-``
+```
 $ cmake -G"Eclipse CDT4 - Unix Makefiles" ../src
 ```
 
 If you want to compile code with Debug symbols, use the following command
 
 ```
-$ $ cmake -G"Eclipse CDT4 - Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ../src
+$ cmake -G"Eclipse CDT4 - Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ../src
 ```
