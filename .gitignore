@@ -4,6 +4,7 @@
 
 # CMake generated files
 build
+build2
 
 # Compiled Object files
 *.slo
