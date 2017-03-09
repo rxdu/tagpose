@@ -33,6 +33,8 @@ private:
 	apriltag_detector_t* apriltag_detector_;
 	apriltag_family_t* apriltag_family_;
 
+	clock_t loop_start_time_;
+
 private:
 	// internal calculation
 	AprilTags::TagDetection ConvertDetectionStruct(apriltag_detection_t* det);

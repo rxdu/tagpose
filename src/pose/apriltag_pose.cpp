@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #include "apriltag_pose.h"
 #include "apriltag_utils/PoseUtil.h"
@@ -14,7 +15,8 @@
 using namespace apriltag_pose;
 using namespace cv;
 
-AprilTagPose::AprilTagPose()
+AprilTagPose::AprilTagPose():
+		loop_start_time_(0)
 {
 	apriltag_family_ = tag36h11_create();
 	apriltag_detector_ = apriltag_detector_create();
@@ -65,6 +67,11 @@ bool AprilTagPose::GetPoseFromImage(cv::OutputArray _dst)
 {
 	cv::Mat frame, gray;
 
+	clock_t last_start_time = loop_start_time_;
+	loop_start_time_ = clock();
+	clock_t exec_time = loop_start_time_ - last_start_time;
+	std::cout << "***** Update rate: " << 1.0/(double(exec_time)/CLOCKS_PER_SEC) << " Hz." << std::endl;
+
 	if(video_cap_.isOpened())
 	{
 		video_cap_.read(frame);
@@ -110,14 +117,14 @@ bool AprilTagPose::GetPoseFromImage(cv::OutputArray _dst)
 			AprilTags::wRo_to_euler(fixed_rot, yaw, pitch, roll);
 
 			std::cout << " ------------------ " << std::endl;
-			std::cout << "tag id: " << tag_det.id << std::endl;
-			std::cout << "distance: " << translation.norm() << std::endl;
-			std::cout << "translation: ( " <<  translation(0) << " , "
-					<<  translation(1) << " , "
-					<<  translation(2) << " )" << std::endl;
-			std::cout << "rotation(rpy): ( " <<  roll/M_PI*180.0 << " , "
-								<<  pitch/M_PI*180.0 << " , "
-								<<  yaw/M_PI*180.0 << " )" << std::endl;
+//			std::cout << "tag id: " << tag_det.id << std::endl;
+//			std::cout << "distance: " << translation.norm() << std::endl;
+//			std::cout << "translation: ( " <<  translation(0) << " , "
+//					<<  translation(1) << " , "
+//					<<  translation(2) << " )" << std::endl;
+//			std::cout << "rotation(rpy): ( " <<  roll/M_PI*180.0 << " , "
+//								<<  pitch/M_PI*180.0 << " , "
+//								<<  yaw/M_PI*180.0 << " )" << std::endl;
 
 			// draw 4 border lines on the tag image
 			tag_det.draw(frame);
