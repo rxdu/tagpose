@@ -1,0 +1,107 @@
+/*
+ * apriltag_detect.cpp
+ *
+ *  Created on: Mar 24, 2017
+ *      Author: rdu
+ */
+
+#include "apriltag_detect.h"
+#include "apriltag_utils/PoseUtil.h"
+
+using namespace al;
+
+ApriltagDetect::ApriltagDetect()
+{
+	apriltag_family_ = tag36h11_create();
+	apriltag_detector_ = apriltag_detector_create();
+
+	apriltag_detector_add_family(apriltag_detector_, apriltag_family_);
+}
+
+ApriltagDetect::~ApriltagDetect()
+{
+	apriltag_detector_destroy(apriltag_detector_);
+	tag36h11_destroy(apriltag_family_);
+}
+
+AprilTags::TagDetection ApriltagDetect::ConvertDetectionStruct(apriltag_detection_t* det)
+{
+	AprilTags::TagDetection tag_det;
+
+	tag_det.id = det->id;
+	tag_det.hammingDistance = det->hamming;
+
+	tag_det.p[0] = std::make_pair<float,float>(det->p[0][0], det->p[0][1]);
+	tag_det.p[1] = std::make_pair<float,float>(det->p[1][0], det->p[1][1]);
+	tag_det.p[2] = std::make_pair<float,float>(det->p[2][0], det->p[2][1]);
+	tag_det.p[3] = std::make_pair<float,float>(det->p[3][0], det->p[3][1]);
+
+	tag_det.cxy = std::make_pair<float,float>(det->c[0], det->c[1]);
+	tag_det.hxy = std::make_pair<float,float>(det->c[0], det->c[1]);
+
+	for(int r = 0; r < det->H->nrows; r++)
+		for(int c = 0; c < det->H->ncols; c++)
+			tag_det.homography(r,c) = det->H->data[r * det->H->ncols + c];
+
+	return tag_det;
+}
+
+void ApriltagDetect::FindApriltags(cv::InputArray _src, cv::OutputArray _dst)
+{
+	cv::Mat frame = _src.getMat();
+
+	// Make an image_u8_t header for the Mat data
+	// accessing cv::Mat (C++ data structure) in a C way
+	image_u8_t im = { .width = frame.cols,
+			.height = frame.rows,
+			.stride = frame.cols,
+			.buf = frame.data
+	};
+
+	// find all tags in the image frame
+	zarray_t *detections = apriltag_detector_detect(apriltag_detector_, &im);
+	//std::cout << zarray_size(detections) << " tags detected" << std::endl;
+
+	// Draw detection outlines of each tag
+	for (int i = 0; i < zarray_size(detections); i++) {
+		apriltag_detection_t *det;
+		zarray_get(detections, i, &det);
+
+		/*------------------------------------------------------------*/
+		AprilTags::TagDetection tag_det = ConvertDetectionStruct(det);
+
+		Eigen::Vector3d translation;
+		Eigen::Matrix3d rotation;
+		tag_det.getRelativeTranslationRotation(0.064, 595, 595, 330, 340,
+				translation, rotation);
+
+		Eigen::Matrix3d F;
+		F <<    1, 0,  0,
+				0,  -1,  0,
+				0,  0,  1;
+		Eigen::Matrix3d fixed_rot = F*rotation;
+		double yaw, pitch, roll;
+		AprilTags::wRo_to_euler(fixed_rot, yaw, pitch, roll);
+
+		std::cout << " ------------------ " << std::endl;
+		std::cout << "tag id: " << tag_det.id << std::endl;
+		std::cout << "distance: " << translation.norm() << std::endl;
+		std::cout << "translation: ( " <<  translation(0) << " , "
+				<<  translation(1) << " , "
+				<<  translation(2) << " )" << std::endl;
+		std::cout << "rotation(rpy): ( " <<  roll/M_PI*180.0 << " , "
+				<<  pitch/M_PI*180.0 << " , "
+				<<  yaw/M_PI*180.0 << " )" << std::endl;
+
+		// draw 4 border lines on the tag image
+		tag_det.draw(frame);
+		/*------------------------------------------------------------*/
+	}
+
+	// free memory used for detection
+	zarray_destroy(detections);
+
+	_dst.create(frame.size(), frame.type());
+	frame.copyTo(_dst);
+}
+

@@ -16,15 +16,17 @@ class VideoCpature
 {
 public:
 	VideoCpature();
+	VideoCpature(int device_id);
 	~VideoCpature();
 
 
 private:
 	// opencv devices
+	bool device_started_;
 	cv::VideoCapture video_cap_;
 
 public:
-	bool OpenDefaultVideoDevice();
+	bool CaptureDeviceStarted() { return device_started_; };
 	bool GetImageFrame(cv::OutputArray _dst);
 };
 
