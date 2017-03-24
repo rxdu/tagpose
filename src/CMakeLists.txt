@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(apriltag-pose)
+project(apriltag_localization)
 
 ## Put all binary files into /bin and libraries into /lib
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
@@ -22,12 +22,12 @@ else()
 endif()
 
 ## Config include directories
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/eigen/)
-include_directories(${CMAKE_SOURCE_DIR}/apriltag/)
-include_directories(${CMAKE_SOURCE_DIR}/apriltag/common)
+include_directories(${CMAKE_SOURCE_DIR}/libraries)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/eigen/)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/common)
 
 ## Add other sub source directories
 add_subdirectory(pose)
-add_subdirectory(apriltag)
-add_subdirectory(apriltag_utils)
+add_subdirectory(modules)
+add_subdirectory(libraries)
