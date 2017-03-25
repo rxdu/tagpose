@@ -48,5 +48,5 @@ target_link_libraries(apriltags ${OpenCV_LIBRARIES})
 #set_target_properties(apriltag_demo PROPERTIES COMPILE_FLAGS "-std=gnu99")
 #target_link_libraries(apriltag_demo apriltags -pthread -lm)
 
-#add_executable(opencv_demo example/opencv_demo.cc)
-#target_link_libraries(opencv_demo apriltags -pthread)
+add_executable(opencv_demo example/opencv_demo.cc)
+target_link_libraries(opencv_demo apriltags -pthread)

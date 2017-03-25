@@ -20,5 +20,8 @@ target_link_libraries(test_videocap al_modules ${OpenCV_LIBS})
 add_executable(test_apriltag tests/test_apriltag.cpp)
 target_link_libraries(test_apriltag al_modules ${OpenCV_LIBS}  -pthread)
 
+add_executable(test_performance tests/test_performance.cpp)
+target_link_libraries(test_performance al_modules ${OpenCV_LIBS}  -pthread)
+
 #add_executable(test_apriltag tests/opencv_demo.cc)
 #target_link_libraries(test_apriltag apriltags -pthread)

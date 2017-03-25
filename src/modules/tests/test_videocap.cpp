@@ -32,6 +32,7 @@ int main(int argc, char* argv[])
 
 #ifdef SHOW_IMG
 			imshow("Processed Image", img);
+			imwrite("sample.jpg", img);
 			if (waitKey(30) >= 0)
 				break;
 #endif

@@ -39,8 +39,6 @@ bool VideoCpature::GetImageFrame(cv::OutputArray _dst)
 		return false;
 	}
 
-	cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
-
 	// copy image so that it can be displayed outside
 	_dst.create(frame.size(), frame.type());
 	frame.copyTo(_dst);

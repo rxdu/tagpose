@@ -29,7 +29,7 @@ private:
 	AprilTags::TagDetection ConvertDetectionStruct(apriltag_detection_t* det);
 
 public:
-	void FindApriltags(cv::InputArray _src, cv::OutputArray _dst);
+	void FindApriltags(cv::InputArray _src);
 };
 
 }

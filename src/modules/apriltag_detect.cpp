@@ -46,21 +46,25 @@ AprilTags::TagDetection ApriltagDetect::ConvertDetectionStruct(apriltag_detectio
 	return tag_det;
 }
 
-void ApriltagDetect::FindApriltags(cv::InputArray _src, cv::OutputArray _dst)
+void ApriltagDetect::FindApriltags(cv::InputArray _src)
 {
-	cv::Mat frame = _src.getMat();
+	cv::Mat frame =  _src.getMat();
+	cv::Mat grey;
+	cv::cvtColor(frame, grey, cv::COLOR_BGR2GRAY);
 
 	// Make an image_u8_t header for the Mat data
 	// accessing cv::Mat (C++ data structure) in a C way
-	image_u8_t im = { .width = frame.cols,
-			.height = frame.rows,
-			.stride = frame.cols,
-			.buf = frame.data
+	image_u8_t im = { .width = grey.cols,
+			.height = grey.rows,
+			.stride = grey.cols,
+			.buf = grey.data
 	};
 
 	// find all tags in the image frame
 	zarray_t *detections = apriltag_detector_detect(apriltag_detector_, &im);
 	//std::cout << zarray_size(detections) << " tags detected" << std::endl;
+
+	std::cout << "image size: " << frame.rows << " , " << frame.cols << " ; tag detected: " << zarray_size(detections) << std::endl;
 
 	// Draw detection outlines of each tag
 	for (int i = 0; i < zarray_size(detections); i++) {
@@ -100,8 +104,5 @@ void ApriltagDetect::FindApriltags(cv::InputArray _src, cv::OutputArray _dst)
 
 	// free memory used for detection
 	zarray_destroy(detections);
-
-	_dst.create(frame.size(), frame.type());
-	frame.copyTo(_dst);
 }
 

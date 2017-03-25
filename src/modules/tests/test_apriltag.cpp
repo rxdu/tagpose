@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 			std::cout << "***** Update rate: " << 1.0/(double(exec_time)/CLOCKS_PER_SEC) << " Hz." << std::endl;
 
 			vc.GetImageFrame(img);
-			ad.FindApriltags(img,disp_img);
+			ad.FindApriltags(img);
 
 #ifdef SHOW_IMG
 			imshow("Processed Image", img);
