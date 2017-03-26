@@ -8,7 +8,7 @@
 #include <ctime>
 #include "opencv2/opencv.hpp"
 #include "video_capture.h"
-#include "apriltag_detect.h"
+#include "apriltag_detection.h"
 
 #define SHOW_IMG 1
 
@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
 	clock_t last_start_time = clock();
 
-	ad.FindApriltags(img);
+	ad.LookForApriltags(img);
 
 	clock_t exec_time = clock() - last_start_time;
 	std::cout << "finished in : " << double(exec_time)/CLOCKS_PER_SEC << " s." << std::endl;

@@ -1,16 +1,21 @@
 /*
- * apriltag_detect.cpp
+ * apriltag_detection.cpp
  *
  *  Created on: Mar 24, 2017
  *      Author: rdu
  */
 
-#include "apriltag_detect.h"
+#include "apriltag_detection.h"
 #include "apriltag_utils/PoseUtil.h"
 
 using namespace al;
 
-ApriltagDetect::ApriltagDetect()
+ApriltagDetect::ApriltagDetect():
+		tag_size_(0.064),
+		cam_fx_(595),
+		cam_fy_(595),
+		cam_px_(330),
+		cam_py_(340)
 {
 	apriltag_family_ = tag36h11_create();
 	apriltag_detector_ = apriltag_detector_create();
@@ -46,7 +51,15 @@ AprilTags::TagDetection ApriltagDetect::ConvertDetectionStruct(apriltag_detectio
 	return tag_det;
 }
 
-void ApriltagDetect::FindApriltags(cv::InputArray _src)
+void ApriltagDetect::SetCameraParams(double fx, double fy, double px, double py)
+{
+	cam_fx_ = fx;
+	cam_fy_ = fy;
+	cam_px_ = px;
+	cam_py_ = py;
+}
+
+void ApriltagDetect::LookForApriltags(cv::InputArray _src, bool print_output)
 {
 	cv::Mat frame =  _src.getMat();
 	cv::Mat grey;
@@ -62,21 +75,19 @@ void ApriltagDetect::FindApriltags(cv::InputArray _src)
 
 	// find all tags in the image frame
 	zarray_t *detections = apriltag_detector_detect(apriltag_detector_, &im);
-	//std::cout << zarray_size(detections) << " tags detected" << std::endl;
 
-	std::cout << "image size: " << frame.rows << " , " << frame.cols << " ; tag detected: " << zarray_size(detections) << std::endl;
+	//std::cout << "image size: " << frame.rows << " , " << frame.cols << " ; tag detected: " << zarray_size(detections) << std::endl;
 
 	// Draw detection outlines of each tag
 	for (int i = 0; i < zarray_size(detections); i++) {
 		apriltag_detection_t *det;
 		zarray_get(detections, i, &det);
 
-		/*------------------------------------------------------------*/
 		AprilTags::TagDetection tag_det = ConvertDetectionStruct(det);
 
 		Eigen::Vector3d translation;
 		Eigen::Matrix3d rotation;
-		tag_det.getRelativeTranslationRotation(0.064, 595, 595, 330, 340,
+		tag_det.getRelativeTranslationRotation(tag_size_, cam_fx_, cam_fy_, cam_px_, cam_py_,
 				translation, rotation);
 
 		Eigen::Matrix3d F;
@@ -87,19 +98,20 @@ void ApriltagDetect::FindApriltags(cv::InputArray _src)
 		double yaw, pitch, roll;
 		AprilTags::wRo_to_euler(fixed_rot, yaw, pitch, roll);
 
-		std::cout << " ------------------ " << std::endl;
-		std::cout << "tag id: " << tag_det.id << std::endl;
-		std::cout << "distance: " << translation.norm() << std::endl;
-		std::cout << "translation: ( " <<  translation(0) << " , "
-				<<  translation(1) << " , "
-				<<  translation(2) << " )" << std::endl;
-		std::cout << "rotation(rpy): ( " <<  roll/M_PI*180.0 << " , "
-				<<  pitch/M_PI*180.0 << " , "
-				<<  yaw/M_PI*180.0 << " )" << std::endl;
+		if(print_output) {
+			std::cout << " ------------------ " << std::endl;
+			std::cout << "tag id: " << tag_det.id << std::endl;
+			std::cout << "distance: " << translation.norm() << std::endl;
+			std::cout << "translation: ( " <<  translation(0) << " , "
+					<<  translation(1) << " , "
+					<<  translation(2) << " )" << std::endl;
+			std::cout << "rotation(rpy): ( " <<  roll/M_PI*180.0 << " , "
+					<<  pitch/M_PI*180.0 << " , "
+					<<  yaw/M_PI*180.0 << " )" << std::endl;
 
-		// draw 4 border lines on the tag image
-		tag_det.draw(frame);
-		/*------------------------------------------------------------*/
+			// draw 4 border lines on the tag image
+			tag_det.draw(frame);
+		}
 	}
 
 	// free memory used for detection

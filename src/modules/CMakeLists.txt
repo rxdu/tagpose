@@ -9,7 +9,7 @@ find_package(OpenCV REQUIRED)
 # Add libraries
 set(AL_MODULES_SRC
   video_capture.cpp
-  apriltag_detect.cpp
+  apriltag_detection.cpp
 )
 add_library(al_modules STATIC ${AL_MODULES_SRC})
 target_link_libraries(al_modules apriltags apriltag_utils ${OpenCV_LIBS})
