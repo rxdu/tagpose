@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "chrono": "c",
+        "limits": "c",
+        "valarray": "c",
+        "algorithm": "c",
+        "*.tcc": "cpp",
+        "fstream": "cpp",
+        "alignedvector3": "cpp"
+    }
+}

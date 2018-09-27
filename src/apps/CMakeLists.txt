@@ -11,4 +11,7 @@ add_executable(camera_calibration camera_calibration.cpp)
 target_link_libraries(camera_calibration ${OpenCV_LIBS})
 
 add_executable(calib_image_capture calib_image_capture.cpp)
-target_link_libraries(calib_image_capture al_modules ${OpenCV_LIBS})
+target_link_libraries(calib_image_capture pose)
+
+add_executable(apriltag_pose_demo apriltag_pose_demo.cpp)
+target_link_libraries(apriltag_pose_demo pose -pthread)

@@ -12,7 +12,7 @@
 
 #include "opencv2/opencv.hpp"
 
-#include "video_capture.h"
+#include "pose/video_capture.h"
 
 using namespace cv;
 using namespace al;

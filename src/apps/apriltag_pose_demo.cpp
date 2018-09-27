@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
 		imshow("Processed Image", img_show);
 		if (waitKey(30) >= 0)
-			break;
+			continue;
 	}
 
 	return 0;

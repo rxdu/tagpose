@@ -1,14 +1,10 @@
 cmake_minimum_required(VERSION 2.8.11)
-project(april_tag)
+project(apriltag)
 
 ## Put all binary files into /bin and libraries into /lib
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 set(ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-
-## Config eigen include directories
-include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/common/)
 
 ## Conditionally add source directories
 find_package(OpenCV REQUIRED)
@@ -41,8 +37,12 @@ set(APRILTAGS_LIB_SRC
 	common/string_util.c
 )
 add_library(apriltags STATIC ${APRILTAGS_LIB_SRC})
-set_target_properties(apriltags PROPERTIES COMPILE_FLAGS "-std=gnu99")
+target_compile_options(apriltags PRIVATE "-std=gnu99")
 target_link_libraries(apriltags ${OpenCV_LIBRARIES})
+target_include_directories(apriltags PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/common>
+	$<INSTALL_INTERFACE:include>)
 
 #add_executable(apriltag_demo example/apriltag_demo.c)
 #set_target_properties(apriltag_demo PROPERTIES COMPILE_FLAGS "-std=gnu99")

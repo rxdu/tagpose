@@ -1,11 +1,13 @@
-/*
+/* 
  * video_capture.cpp
- *
- *  Created on: Mar 23, 2017
- *      Author: rdu
- */
+ * 
+ * Created on: Mar 23, 2017
+ * Description: 
+ * 
+ * Copyright (c) 2018 Ruixiang Du (rdu)
+ */ 
 
-#include "video_capture.h"
+#include "pose/video_capture.h"
 
 using namespace al;
 
@@ -21,7 +23,7 @@ VideoCpature::VideoCpature(int device_id)
 
 VideoCpature::~VideoCpature()
 {
-	if(video_cap_.isOpened())
+	if (video_cap_.isOpened())
 	{
 		video_cap_.release();
 		std::cout << "video capture device released." << std::endl;
@@ -34,7 +36,8 @@ bool VideoCpature::GetImageFrame(cv::OutputArray _dst)
 
 	video_cap_.read(frame);
 
-	if (frame.empty()) {
+	if (frame.empty())
+	{
 		std::cerr << "ERROR! blank frame grabbed\n";
 		return false;
 	}

@@ -6,7 +6,7 @@
  */
 
 #include "opencv2/opencv.hpp"
-#include "video_capture.h"
+#include "pose/video_capture.h"
 
 #define SHOW_IMG 1
 
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
 #ifdef SHOW_IMG
 			imshow("Processed Image", img);
-			imwrite("sample.jpg", img);
+			imwrite("sample_capture.jpg", img);
 			if (waitKey(30) >= 0)
 				break;
 #endif

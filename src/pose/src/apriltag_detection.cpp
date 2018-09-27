@@ -1,11 +1,13 @@
-/*
+/* 
  * apriltag_detection.cpp
- *
- *  Created on: Mar 24, 2017
- *      Author: rdu
- */
+ * 
+ * Created on: Mar 24, 2017
+ * Description: 
+ * 
+ * Copyright (c) 2018 Ruixiang Du (rdu)
+ */ 
 
-#include "apriltag_detection.h"
+#include "pose/apriltag_detection.h"
 #include "apriltag_utils/PoseUtil.h"
 
 using namespace al;

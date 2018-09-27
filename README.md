@@ -1,8 +1,10 @@
 # apriltag-pose
 
+This library provides a light C++ wrapper of the AprilTag library to extract pose information from tags.
+
 ## 1. Development environment
 
-* Ubuntu 14.04 64-bit (MacOS should also work, if you know how to configure it)
+* Ubuntu >= 14.04 64-bit (MacOS should also work, if you know how to configure it)
 * GCC >= 4.8.4
 
 ## 2. Install dependencies

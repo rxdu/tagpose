@@ -6,8 +6,8 @@
  */
 
 #include "opencv2/opencv.hpp"
-#include "video_capture.h"
-#include "apriltag_detection.h"
+#include "pose/video_capture.h"
+#include "pose/apriltag_detection.h"
 
 #define SHOW_IMG 1
 
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 #ifdef SHOW_IMG
 			imshow("Processed Image", img);
 			if (waitKey(30) >= 0)
-				break;
+				continue;
 #endif
 		}
 	}

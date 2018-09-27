@@ -22,14 +22,13 @@ else()
 endif()
 
 ## Config include directories
-include_directories(${CMAKE_SOURCE_DIR}/modules)
-include_directories(${CMAKE_SOURCE_DIR}/libraries)
+# include_directories(${CMAKE_SOURCE_DIR}/modules)
+# include_directories(${CMAKE_SOURCE_DIR}/libraries)
 include_directories(${CMAKE_SOURCE_DIR}/libraries/eigen/)
-include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/)
-include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/common)
+# include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/)
+# include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/common)
 
 ## Add other sub source directories
 add_subdirectory(apps)
 add_subdirectory(pose)
-add_subdirectory(modules)
 add_subdirectory(libraries)

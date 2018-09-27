@@ -1,8 +1,8 @@
 
 #include "opencv2/opencv.hpp"
 
-#include "TagDetection.h"
-#include "MathUtil.h"
+#include "apriltag_utils/TagDetection.h"
+#include "apriltag_utils/MathUtil.h"
 
 #ifdef PLATFORM_APERIOS
 //missing/broken isnan

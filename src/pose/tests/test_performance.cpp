@@ -7,8 +7,8 @@
 
 #include <ctime>
 #include "opencv2/opencv.hpp"
-#include "video_capture.h"
-#include "apriltag_detection.h"
+#include "pose/video_capture.h"
+#include "pose/apriltag_detection.h"
 
 #define SHOW_IMG 1
 
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	ApriltagDetect ad;
 
 	cv::Mat img;
-	img = imread("/home/rdu/Workspace/apriltag_localization/build/bin/sample.jpg",IMREAD_UNCHANGED);
+	img = imread("../../data/test/sample.jpg",IMREAD_UNCHANGED);
 
 	cv::Mat disp_img;
 
