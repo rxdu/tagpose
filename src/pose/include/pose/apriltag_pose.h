@@ -29,6 +29,7 @@ class AprilTagPose
 
 	// video capture device operations
 	bool OpenDefaultVideoDevice();
+    bool OpenVideoDevice(std::string device);
 
 	// pose estimation from apriltags
 	bool GetPoseFromImage(cv::OutputArray _dst);

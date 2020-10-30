@@ -42,6 +42,11 @@ bool AprilTagPose::OpenDefaultVideoDevice()
 	return video_cap_.open(0);
 }
 
+bool AprilTagPose::OpenVideoDevice(std::string device)
+{
+	return video_cap_.open(device);
+}
+
 AprilTags::TagDetection AprilTagPose::ConvertDetectionStruct(apriltag_detection_t *det)
 {
 	AprilTags::TagDetection tag_det;

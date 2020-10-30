@@ -21,6 +21,10 @@ VideoCpature::VideoCpature(int device_id)
 	device_started_ = video_cap_.open(device_id);
 }
 
+VideoCpature::VideoCpature(std::string device_address){
+    device_started_ = video_cap_.open(device_address);
+}
+
 VideoCpature::~VideoCpature()
 {
 	if (video_cap_.isOpened())

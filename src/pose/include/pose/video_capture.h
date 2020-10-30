@@ -10,6 +10,7 @@
 #ifndef VIDEO_CAPTURE_H
 #define VIDEO_CAPTURE_H
 
+#include <string>
 #include "opencv2/opencv.hpp"
 
 namespace al
@@ -19,6 +20,7 @@ class VideoCpature
 public:
 	VideoCpature();
 	VideoCpature(int device_id);
+    VideoCpature(std::string device_address);
 	~VideoCpature();
 
 	bool CaptureDeviceStarted() { return device_started_; };
