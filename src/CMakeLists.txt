@@ -29,6 +29,7 @@ include_directories(${CMAKE_SOURCE_DIR}/libraries/eigen/)
 # include_directories(${CMAKE_SOURCE_DIR}/libraries/apriltag/common)
 
 ## Add other sub source directories
-add_subdirectory(apps)
-add_subdirectory(pose)
-add_subdirectory(libraries)
+# add_subdirectory(apps)
+# add_subdirectory(pose)
+# add_subdirectory(libraries)
+add_subdirectory(apriltag)
