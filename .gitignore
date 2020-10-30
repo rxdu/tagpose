@@ -2,6 +2,8 @@
 *~
 *.*~
 
+.vscode
+
 # CMake generated files
 build
 build2
