@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	std::string img_prefix = argv[1];
 	int img_num = std::stoi(argv[2]);
 
-	VideoCpature vc;
+	Camera vc;
 
 	if(vc.CaptureDeviceStarted()) {
 		cv::Mat img;
